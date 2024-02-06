@@ -1,0 +1,6 @@
+.copy-message-style {
+  font-weight: bold; /* 太字 */
+  color: #4caf50; /* 緑色 */
+  margin-right: 10px; /* 右側にマージンを設定 */
+  /* その他必要に応じてスタイルを追加 */
+}
