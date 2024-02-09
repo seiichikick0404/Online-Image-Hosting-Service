@@ -52,4 +52,7 @@ return [
         $part = DatabaseHelper::getComputerPartById($id);
         return new JSONRenderer(['part'=>$part]);
     },
+    'top'=>function(){
+        return new HTMLRenderer('component/createImage');
+    },
 ];
