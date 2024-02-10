@@ -1,6 +1,11 @@
-.copy-message-style {
-  font-weight: bold; /* 太字 */
-  color: #4caf50; /* 緑色 */
-  margin-right: 10px; /* 右側にマージンを設定 */
-  /* その他必要に応じてスタイルを追加 */
+.gallery-item {
+  margin-bottom: 30px;
+}
+.gallery-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}
+.text-muted {
+  font-size: 0.8rem;
 }
