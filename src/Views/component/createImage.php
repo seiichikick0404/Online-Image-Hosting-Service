@@ -6,15 +6,23 @@
         </div>
         <div class="mb-3">
             <label for="formFile" class="form-label">ファイルを選択(png, jpg, gif)</label>
-            <input class="form-control" type="file" id="formFile">
+            <input class="form-control" type="file" id="formFile" accept="image/png, image/jpeg, image/gif">
         </div>
         <div class="mb-3">
             <label class="form-label">プレビュー</label>
-            <div id="preview" class="border p-2">No image selected</div>
+            <img id="previewImage" src="#" alt="No image selected" style="display: none; max-width: 100%; height: auto;"/>
         </div>
-        <button type="submit" class="btn btn-dark">POST</button>
+        <button id="post-btn-before" type="button" class="btn btn-dark">POST</button>
+        <button id="post-btn-after" class="btn btn-dark" type="button" disabled>
+            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            Posting...
+        </button>
+</div>
     </form>
 </div>
 
+
+<script src="../../public/js/preview.js"></script>
+<script src="../../public/js/post.js"></script>
 
 

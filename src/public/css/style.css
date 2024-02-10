@@ -9,3 +9,14 @@
 .text-muted {
   font-size: 0.8rem;
 }
+
+#previewImage {
+  max-width: 40rem;
+  max-height: 40rem;
+  display: block;
+  margin: auto;
+}
+
+#post-btn-after {
+  display: none;
+}
