@@ -18,10 +18,6 @@ return [
 
         return new HTMLRenderer('component/createSnippet', ['syntaxes' => $syntaxes, 'errors' => $errors]);
     },
-    'snippet/library'=>function(): HTTPRenderer{
-         $snippets = DatabaseHelper::getActiveSnippets();
-         return new HTMLRenderer('component/library', ['snippets' => $snippets]);
-    },
     'snippet/save'=>function(): HTTPRenderer{
         $errors = ValidationHelper::createSnippetPost($_POST);
         if (count($errors) > 0) {
@@ -54,5 +50,9 @@ return [
     },
     'top'=>function(){
         return new HTMLRenderer('component/createImage');
+    },
+    'imageLibrary'=>function(){
+
+        return new HTMLRenderer('component/imageLibrary');
     },
 ];
