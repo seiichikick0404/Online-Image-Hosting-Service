@@ -234,31 +234,31 @@ class DatabaseHelper
                 ];
             }
 
-            // $db = new MySQLWrapper();
+            $db = new MySQLWrapper();
 
-            // // SQL文の修正。パラメータの数と内容を合わせます。
-            // $sql = "INSERT INTO images (ip_address, title, image_path, image_url, delete_url, view_count, last_access_time) 
-            //         VALUES (?, ?, ?, ?, ?, ?, NOW())";
+            $sql = "INSERT INTO images (ip_address, title, image_path, image_url, delete_url, view_count, last_access_time) 
+                    VALUES (?, ?, ?, ?, ?, ?, NOW())";
 
-            // $stmt = $db->prepare($sql);
+            if (!$stmt = $db->prepare($sql)) {
+                throw new Exception('Failed to prepare statement: ' . $db->error);
+            }
 
+            $deleteUrl = "sample_delete_url"; // 仮の削除URL
+            $imageUrl = "sample_image_url"; // 仮の画像URL
+            $viewCount = 0;
 
-            // $deleteUrl = "/delete/" . basename($image['name']);
-            // $imageUrl = "sample_image_url";
-            // $viewCount = 0;
+            $stmt->bind_param('sssssi', 
+                $ipAddress,
+                $title,
+                $imagePath,
+                $imageUrl,
+                $deleteUrl,
+                $viewCount
+            );
 
-            // $stmt->bind_param('sssssi',
-            //     $ipAddress,
-            //     $title,
-            //     $imagePath,
-            //     $imageUrl,
-            //     $deleteUrl,
-            //     $viewCount
-            // );
-
-            // if (!$stmt->execute()) {
-            //     throw new Exception('Failed to store image: ' . $stmt->error);
-            // }
+            if (!$stmt->execute()) {
+                throw new Exception('Failed to execute statement: ' . $stmt->error);
+            }
 
         } catch(Exception $e) {
             return [
