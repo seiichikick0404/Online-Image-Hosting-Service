@@ -8,9 +8,8 @@ class ImageHelper
 {
     const TARGET_DIR = __DIR__ . '/../public/images/';
 
-    public function saveImageFile(array $image): bool
+    public function saveImageFile(array $image): string
     {
-        // 一意の画像パスを生成
         $imagePath = self::generateImagePath($image['name']);
         $targetFile = self::TARGET_DIR . $imagePath;
 
@@ -22,18 +21,18 @@ class ImageHelper
 
         // 画像ファイルをサーバーに保存
         if (move_uploaded_file($image['tmp_name'], $targetFile)) {
-            return true; // 成功
+            return $imagePath;
         } else {
-            return false; // 失敗
+            return null;
         }
     }
 
     public static function generateImagePath(string $filename): string
     {
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
-        $uniqueString = uniqid();
-        $dir = substr($uniqueString, 0, 2);
-        $imagePath = $dir . '/' . $uniqueString . '.' . $extension;
+        $uniqueId = md5(uniqid(rand(), true));
+        $dir = substr($uniqueId, 0, 2);
+        $imagePath = "{$dir}/{$uniqueId}.{$extension}";
 
         return $imagePath;
     }
