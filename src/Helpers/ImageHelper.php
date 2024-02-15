@@ -6,7 +6,7 @@ use Exception;
 
 class ImageHelper 
 {
-    const TARGET_DIR = __DIR__ . '/../public/images/';
+    const TARGET_DIR = __DIR__ . '/../public/storage/';
 
     public function saveImageFile(array $image): string
     {
@@ -19,7 +19,6 @@ class ImageHelper
             mkdir($dirPath, 0755, true);
         }
 
-        // 画像ファイルをサーバーに保存
         if (move_uploaded_file($image['tmp_name'], $targetFile)) {
             return $imagePath;
         } else {

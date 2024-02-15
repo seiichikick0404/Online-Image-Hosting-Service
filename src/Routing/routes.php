@@ -52,7 +52,18 @@ return [
         return new HTMLRenderer('component/createImage');
     },
     'imageLibrary'=>function(){
-
         return new HTMLRenderer('component/imageLibrary');
+    },
+    'api/json/save'=> function(){
+        $title = isset($_POST['title']) ? $_POST['title'] : 'No title provided';
+        $image = isset($_FILES['image']) ? $_FILES['image'] : null;
+        $clientIp = $_SERVER['REMOTE_ADDR'];
+
+        // TODO: バリデーション(今回のブランチでは行わない)
+
+        //ここでデータを保存 
+        $responseData = DatabaseHelper::createImage($title, $image, $clientIp);
+
+        return new JSONRenderer(["response" => $responseData]);
     },
 ];
