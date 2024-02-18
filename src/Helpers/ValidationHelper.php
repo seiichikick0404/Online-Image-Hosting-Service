@@ -2,6 +2,8 @@
 
 namespace Helpers;
 
+use Helpers\DatabaseHelper;
+
 class ValidationHelper
 {
     public static function integer($value, float $min = -INF, float $max = INF): int
@@ -117,7 +119,19 @@ class ValidationHelper
                 array_push($validated['errors']['image'], "許可されていないファイル形式です。JPEG、PNG、GIFのみが許可されています。");
                 $validated['success'] = false;
             }
+
+            // 1日のアップロード制限チェック
+            if (!DatabaseHelper::checkDailyUploadLimit($ipAddress)) {
+                array_push($validated['errors']['image'], "1日にアップロードできるファイル数は5枚までです。");
+                $validated['success'] = false;
+            } elseif (!DatabaseHelper::checkDailyUploadCapacityLimit($ipAddress, $image['size'])) {
+                array_push($validated['errors']['image'], "1日にアップロードできる総容量は5MBまでです。");
+                $validated['success'] = false;
+            }
         }
+
+        
+
 
         // IPアドレスのフォーマットチェック
         if (!filter_var($ipAddress, FILTER_VALIDATE_IP)) {

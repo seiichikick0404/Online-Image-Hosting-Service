@@ -25,8 +25,8 @@ class DatabaseHelper
 
             $db = new MySQLWrapper();
 
-            $sql = "INSERT INTO images (ip_address, title, image_path, image_url, delete_url, view_count, last_access_time) 
-                    VALUES (?, ?, ?, ?, ?, ?, NOW())";
+            $sql = "INSERT INTO images (ip_address, title, image_path, image_url, delete_url, view_count, last_access_time, byte_size) 
+                VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)";
 
             if (!$stmt = $db->prepare($sql)) {
                 throw new Exception('Failed to prepare statement: ' . $db->error);
@@ -35,15 +35,17 @@ class DatabaseHelper
             $deleteUrl = "sample_delete_url"; // 仮の削除URL
             $imageUrl = "sample_image_url"; // 仮の画像URL
             $viewCount = 0;
+            $byteSize = $image['size'];
 
-            $stmt->bind_param('sssssi', 
-                $ipAddress,
-                $title,
-                $imagePath,
-                $imageUrl,
-                $deleteUrl,
-                $viewCount
-            );
+            $stmt->bind_param('sssssii', 
+            $ipAddress,
+            $title,
+            $imagePath,
+            $imageUrl,
+            $deleteUrl,
+            $viewCount,
+            $byteSize
+        );
 
             if (!$stmt->execute()) {
                 throw new Exception('Failed to execute statement: ' . $stmt->error);
@@ -60,6 +62,59 @@ class DatabaseHelper
             'success' => true,
             'message' => '画像の登録が完了しました。'
         ];
+    }
+
+    public static function checkDailyUploadLimit(string $ipAddress): bool
+    {
+        $db = new MySQLWrapper();
+        $today = date("Y-m-d");
+
+        $stmt = $db->prepare(
+            "SELECT COUNT(*) AS uploads_today
+            FROM images
+            WHERE ip_address = ?
+            AND DATE(created_at) = ?"
+        );
+        $stmt->bind_param('ss', $ipAddress, $today);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        $dailyUploadLimit = 4;
+        if ($row) {
+            return $row['uploads_today'] <= $dailyUploadLimit;
+        } else {
+            return true;
+        }
+    }
+
+    public static function checkDailyUploadCapacityLimit(string $ipAddress, int $byteSize): bool
+    {
+        $db = new MySQLWrapper();
+        $today = date("Y-m-d");
+
+        $stmt = $db->prepare(
+            "SELECT SUM(byte_size) AS total_bytes
+            FROM images
+            WHERE ip_address = ?
+            AND DATE(created_at) = ?"
+        );
+
+        $stmt->bind_param('ss', $ipAddress, $today);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        // 5MBの上限をバイトで指定
+        $dailyUploadLimitBytes = 1 * 1024 * 1024;
+
+        if ($row && $row['total_bytes'] !== null) {
+            return $row['total_bytes'] + $byteSize <= $dailyUploadLimitBytes;
+        } else {
+            return true;
+        }
     }
 
 }
