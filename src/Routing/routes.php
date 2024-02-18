@@ -31,15 +31,17 @@ return [
         return new HTMLRenderer('component/imageLibrary');
     },
     'api/json/save'=> function(){
-        $title = isset($_POST['title']) ? $_POST['title'] : 'No title provided';
+        $title = isset($_POST['title']) ? $_POST['title'] : null;
         $image = isset($_FILES['image']) ? $_FILES['image'] : null;
-        $clientIp = $_SERVER['REMOTE_ADDR'];
+        $clientIp = $_SERVER['REMOTE_ADDR'] ? : null;
 
-        // TODO: バリデーション(今回のブランチでは行わない)
-
-        //ここでデータを保存 
-        $responseData = DatabaseHelper::createImage($title, $image, $clientIp);
-
-        return new JSONRenderer(["response" => $image]);
+        // バリデーションチェック
+        $validated = ValidationHelper::uploadImage($title, $image, $clientIp);
+        if (!$validated['success']) {
+            return new JSONRenderer(["response" => $validated]);
+        } else {
+            $responseData = DatabaseHelper::createImage($title, $image, $clientIp);
+            return new JSONRenderer(["response" => $responseData]);
+        }
     },
 ];
