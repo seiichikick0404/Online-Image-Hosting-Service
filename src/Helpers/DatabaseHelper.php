@@ -115,7 +115,7 @@ class DatabaseHelper
         $row = $result->fetch_assoc();
 
         // 5MBの上限をバイトで指定
-        $dailyUploadLimitBytes = 1 * 1024 * 1024;
+        $dailyUploadLimitBytes = 5 * 1024 * 1024;
 
         if ($row && $row['total_bytes'] !== null) {
             return $row['total_bytes'] + $byteSize <= $dailyUploadLimitBytes;

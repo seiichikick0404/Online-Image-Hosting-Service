@@ -44,4 +44,9 @@ return [
             return new JSONRenderer(["response" => $responseData]);
         }
     },
+    'jpeg'=>function(){
+        var_dump("詳細ページへのルーティングです");
+        exit;
+        return new HTMLRenderer('component/showImage');
+    },
 ];

@@ -47,7 +47,7 @@ class ImageHelper
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         $uniqueId = md5(uniqid(rand(), true));
 
-        return "/" . $extension . "/" . $uniqueId;
+        return "/media-type-" . $extension . "/" . $uniqueId;
     }
 
     // TODO: 一意な削除用URL生成
