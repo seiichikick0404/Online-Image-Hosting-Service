@@ -38,17 +38,20 @@ class DatabaseHelper
             $byteSize = $image['size'];
 
             $stmt->bind_param('sssssii', 
-            $ipAddress,
-            $title,
-            $imagePath,
-            $imageUrl,
-            $deleteUrl,
-            $viewCount,
-            $byteSize
-        );
+                $ipAddress,
+                $title,
+                $imagePath,
+                $imageUrl,
+                $deleteUrl,
+                $viewCount,
+                $byteSize
+            );
 
             if (!$stmt->execute()) {
-                throw new Exception('Failed to execute statement: ' . $stmt->error);
+                return [
+                    'success' => false,
+                    'message' => 'データベースへの登録に失敗しました。',
+                ];
             }
 
         } catch(Exception $e) {
@@ -60,7 +63,11 @@ class DatabaseHelper
 
         return [
             'success' => true,
-            'message' => '画像の登録が完了しました。'
+            'message' => '画像の登録が完了しました。',
+            'data' => [
+                'imageUrl' => $imageUrl,
+                'deleteUrl' => $deleteUrl,
+            ],
         ];
     }
 
