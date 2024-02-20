@@ -33,7 +33,7 @@ class DatabaseHelper
             }
 
             $deleteUrl = "sample_delete_url"; // 仮の削除URL
-            $imageUrl = "sample_image_url"; // 仮の画像URL
+            $imageUrl = ImageHelper::generateImageShowPath($image['name']);
             $viewCount = 0;
             $byteSize = $image['size'];
 
