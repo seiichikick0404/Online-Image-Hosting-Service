@@ -33,22 +33,25 @@ class DatabaseHelper
             }
 
             $deleteUrl = "sample_delete_url"; // 仮の削除URL
-            $imageUrl = "sample_image_url"; // 仮の画像URL
+            $imageUrl = ImageHelper::generateImageShowPath($image['name']);
             $viewCount = 0;
             $byteSize = $image['size'];
 
             $stmt->bind_param('sssssii', 
-            $ipAddress,
-            $title,
-            $imagePath,
-            $imageUrl,
-            $deleteUrl,
-            $viewCount,
-            $byteSize
-        );
+                $ipAddress,
+                $title,
+                $imagePath,
+                $imageUrl,
+                $deleteUrl,
+                $viewCount,
+                $byteSize
+            );
 
             if (!$stmt->execute()) {
-                throw new Exception('Failed to execute statement: ' . $stmt->error);
+                return [
+                    'success' => false,
+                    'message' => 'データベースへの登録に失敗しました。',
+                ];
             }
 
         } catch(Exception $e) {
@@ -60,7 +63,11 @@ class DatabaseHelper
 
         return [
             'success' => true,
-            'message' => '画像の登録が完了しました。'
+            'message' => '画像の登録が完了しました。',
+            'data' => [
+                'imageUrl' => $imageUrl,
+                'deleteUrl' => $deleteUrl,
+            ],
         ];
     }
 
@@ -108,7 +115,7 @@ class DatabaseHelper
         $row = $result->fetch_assoc();
 
         // 5MBの上限をバイトで指定
-        $dailyUploadLimitBytes = 1 * 1024 * 1024;
+        $dailyUploadLimitBytes = 5 * 1024 * 1024;
 
         if ($row && $row['total_bytes'] !== null) {
             return $row['total_bytes'] + $byteSize <= $dailyUploadLimitBytes;
@@ -117,4 +124,21 @@ class DatabaseHelper
         }
     }
 
+    public static function getImage(string $uri): array
+    {
+        $db = new MySQLWrapper();
+
+        $stmt = $db->prepare("SELECT * FROM images WHERE image_url = ?");
+        $stmt->bind_param('s', $uri);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $imageData = $result->fetch_assoc();
+
+        if ($imageData === null) {
+            return [];
+        } else {
+            return $imageData;
+        }
+    }
 }

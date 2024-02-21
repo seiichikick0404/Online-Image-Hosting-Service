@@ -26,7 +26,7 @@ class ImageHelper
         }
     }
 
-    public static function generateImagePath(string $filename): string
+    private static function generateImagePath(string $filename): string
     {
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         $uniqueId = md5(uniqid(rand(), true));
@@ -35,4 +35,20 @@ class ImageHelper
 
         return $imagePath;
     }
+
+    /**
+     * 一意な共有URLパスを生成
+     *
+     * @param string $filename
+     * @return string
+     */
+    public static function generateImageShowPath(string $filename): string
+    {
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $uniqueId = md5(uniqid(rand(), true));
+
+        return "/media-type-" . $extension . "/" . $uniqueId;
+    }
+
+    // TODO: 一意な削除用URL生成
 }

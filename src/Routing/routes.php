@@ -44,4 +44,16 @@ return [
             return new JSONRenderer(["response" => $responseData]);
         }
     },
+    'show'=>function(){
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri =  str_replace("/show", "", $uri);
+
+        try {
+            $targetImage = DatabaseHelper::getImage($uri);
+        } catch(Exception $e) {
+            $targetImage = null;
+        }
+
+        return new HTMLRenderer('component/showImage', ['imageData' => $targetImage]);
+    },
 ];
