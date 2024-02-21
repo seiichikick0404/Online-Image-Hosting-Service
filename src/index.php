@@ -13,10 +13,11 @@ $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = ltrim($path, '/');
 
 $requestUrlParts =explode("/", $path);
-// TODO: ここでmedia-type-jpeg,png, gifの場合は/showに遷移させる。
-var_dump($requestUrlParts);
-exit;
+$mediaTypes = ['media-type-jpeg', 'media-type-png', 'media-type-gif'];
 
+if (in_array("show", $requestUrlParts)) {
+    $path = "show";
+}
 
 // ルートにアクセスしてきたらsnippet/createに遷移
 if ($path === "") {

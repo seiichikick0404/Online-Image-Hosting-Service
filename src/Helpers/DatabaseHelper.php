@@ -124,4 +124,17 @@ class DatabaseHelper
         }
     }
 
+    public static function getImage(string $uri): array
+    {
+        $db = new MySQLWrapper();
+
+        $stmt = $db->prepare("SELECT * FROM images WHERE image_url = ?");
+        $stmt->bind_param('s', $uri);
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $imageData = $result->fetch_assoc();
+
+        return $imageData;
+    }
 }

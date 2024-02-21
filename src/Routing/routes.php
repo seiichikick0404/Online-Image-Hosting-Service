@@ -44,9 +44,16 @@ return [
             return new JSONRenderer(["response" => $responseData]);
         }
     },
-    'jpeg'=>function(){
-        var_dump("詳細ページへのルーティングです");
-        exit;
-        return new HTMLRenderer('component/showImage');
+    'show'=>function(){
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $uri =  str_replace("/show", "", $uri);
+
+        try {
+            $targetImage = DatabaseHelper::getImage($uri);
+        } catch(Exception $e) {
+            $targetImage = null;
+        }
+
+        return new HTMLRenderer('component/showImage', ['imageData' => $targetImage]);
     },
 ];
