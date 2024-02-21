@@ -135,6 +135,10 @@ class DatabaseHelper
         $result = $stmt->get_result();
         $imageData = $result->fetch_assoc();
 
-        return $imageData;
+        if ($imageData === null) {
+            return [];
+        } else {
+            return $imageData;
+        }
     }
 }
