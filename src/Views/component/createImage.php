@@ -19,6 +19,18 @@
             <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
             Posting...
         </button>
+
+        <!-- 通信完了後の情報を表示する領域 -->
+        <div id="successMessageContainer" class="mt-3 d-none">
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">登録完了</h4>
+                <p id="successText">画像が正常に登録されました。</p>
+                <hr>
+                <p class="mb-0" id="viewUrl">閲覧用URL: <a href="#" target="_blank">こちら</a></p>
+                <p class="mb-0" id="deleteUrl">削除用URL: <a href="#" target="_blank">こちら</a></p>
+            </div>
+        </div>
+
 </div>
     </form>
 </div>
