@@ -3,8 +3,6 @@ session_start();
 
 use Helpers\DatabaseHelper;
 use Helpers\ValidationHelper;
-use Response\HTTPRenderer;
-use Helpers\CreateSnippetHelper;
 use Response\Render\HTMLRenderer;
 use Response\Render\JSONRenderer;
 
@@ -36,6 +34,7 @@ return [
         $uri =  str_replace("/show", "", $uri);
 
         try {
+            DatabaseHelper::incrementViewCount($uri);
             $targetImage = DatabaseHelper::getImage($uri);
         } catch(Exception $e) {
             $targetImage = null;
