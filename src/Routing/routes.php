@@ -13,7 +13,8 @@ return [
         return new HTMLRenderer('component/createImage');
     },
     'imageLibrary'=>function(){
-        return new HTMLRenderer('component/imageLibrary');
+        $images = DatabaseHelper::getImages();
+        return new HTMLRenderer('component/imageLibrary', ['images' => $images]);
     },
     'api/json/save'=> function(){
         $title = isset($_POST['title']) ? $_POST['title'] : null;

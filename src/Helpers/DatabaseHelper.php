@@ -4,11 +4,25 @@ namespace Helpers;
 
 use Database\MySQLWrapper;
 use Exception;
-use DateTime;
 use Helpers\ImageHelper;
 
 class DatabaseHelper
 {
+    public static function getImages(): array
+    {
+        $db = new MySQLWrapper();
+        $stmt = $db->prepare("SELECT * FROM images ORDER BY created_at DESC LIMIT 15");
+        $stmt->execute();
+
+        $result = $stmt->get_result();
+        $imagesData = [];
+        if ($result) {
+            $imagesData = $result->fetch_all(MYSQLI_ASSOC);
+        }
+
+        return $imagesData;
+    }
+
     public static function createImage(string $title, array $image, string $ipAddress): array
     {
         try {
