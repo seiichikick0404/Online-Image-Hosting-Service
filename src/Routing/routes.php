@@ -11,19 +11,6 @@ use Response\Render\JSONRenderer;
 
 
 return [
-    'snippet/save'=>function(): HTTPRenderer{
-        $errors = ValidationHelper::createSnippetPost($_POST);
-        if (count($errors) > 0) {
-            $_SESSION['errors'] = $errors;
-            header("Location: ../snippet/create");
-            exit;
-        }
-
-        $uniquePath = CreateSnippetHelper::generatePath();
-        CreateSnippetHelper::createSnippet($_POST, $uniquePath);
-
-        return new HTMLRenderer('component/show');
-   },
     'top'=>function(){
         return new HTMLRenderer('component/createImage');
     },
@@ -55,5 +42,21 @@ return [
         }
 
         return new HTMLRenderer('component/showImage', ['imageData' => $targetImage]);
+    },
+    'delete'=>function(){
+        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $deleteUrl = str_replace("/delete", "", $uri);
+
+        try {
+            $status = DatabaseHelper::deleteImage($deleteUrl);
+        } catch(Exception $e) {
+            $status = false;
+        }
+
+        if ($status) {
+            return new HTMLRenderer('component/deleteImage', ['message' => "削除が完了しました。"]);
+        } else {
+            return new HTMLRenderer('component/deleteImage', ['imageData' => "画像データの削除に失敗しました。"]);
+        }
     },
 ];
