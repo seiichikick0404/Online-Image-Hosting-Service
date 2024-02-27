@@ -130,9 +130,6 @@ class ValidationHelper
             }
         }
 
-        
-
-
         // IPアドレスのフォーマットチェック
         if (!filter_var($ipAddress, FILTER_VALIDATE_IP)) {
             array_push($validated['errors']['ipAddress'], "IPアドレスが不正です。");
@@ -147,4 +144,18 @@ class ValidationHelper
         return $validated;
     }
 
+    public static function handleRoute(string $path): string
+    {
+        $requestUrlParts = explode("/", $path);
+
+        if (in_array("show", $requestUrlParts)) {
+            $path = "show";
+        } elseif (in_array("delete", $requestUrlParts)) {
+            $path = "delete";
+        } elseif ($path === "") { 
+            $path = "top";
+        }
+
+        return $path;
+    }
 }

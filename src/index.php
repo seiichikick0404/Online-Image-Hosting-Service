@@ -1,4 +1,7 @@
 <?php
+
+use Helpers\ValidationHelper;
+
 header("Access-Control-Allow-Origin: *");
 
 require_once 'vendor/autoload.php';
@@ -11,19 +14,7 @@ $routes = include('Routing/routes.php');
 // リクエストURIを解析してパスだけを取得します。
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = ltrim($path, '/');
-
-$requestUrlParts =explode("/", $path);
-$mediaTypes = ['media-type-jpeg', 'media-type-png', 'media-type-gif'];
-
-if (in_array("show", $requestUrlParts)) {
-    $path = "show";
-}
-
-// ルートにアクセスしてきたらsnippet/createに遷移
-if ($path === "") {
-    header("Location: /snippet/create");
-    exit;
-}
+$path = ValidationHelper::handleRoute($path);
 
 // ルートにパスが存在するかチェックする
 if (isset($routes[$path])) {

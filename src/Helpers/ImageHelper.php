@@ -50,5 +50,17 @@ class ImageHelper
         return "/media-type-" . $extension . "/" . $uniqueId;
     }
 
-    // TODO: 一意な削除用URL生成
+    /**
+     * 一意な削除用URL生成
+     *
+     * @param string $filename
+     * @return string
+     */
+    public static function generateImageDeletePath(string $filename): string
+    {
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $uniqueId = md5(uniqid(rand(), true));
+
+        return "/" . $extension . "/" . $uniqueId;
+    }
 }

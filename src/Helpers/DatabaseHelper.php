@@ -32,12 +32,12 @@ class DatabaseHelper
                 throw new Exception('Failed to prepare statement: ' . $db->error);
             }
 
-            $deleteUrl = "sample_delete_url"; // 仮の削除URL
+            $deleteUrl = ImageHelper::generateImageDeletePath($image['name']);
             $imageUrl = ImageHelper::generateImageShowPath($image['name']);
             $viewCount = 0;
             $byteSize = $image['size'];
 
-            $stmt->bind_param('sssssii', 
+            $stmt->bind_param('sssssii',
                 $ipAddress,
                 $title,
                 $imagePath,
@@ -141,4 +141,39 @@ class DatabaseHelper
             return $imageData;
         }
     }
+
+    public static function deleteImage(string $deleteUrl): bool
+    {
+        $db = new MySQLWrapper();
+
+        // 該当する画像が存在するか確認
+        $stmt = $db->prepare("SELECT * FROM images WHERE delete_url = ?");
+        $stmt->bind_param('s', $deleteUrl);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $imageData = $result->fetch_assoc();
+
+        // 該当する画像がデータベースに存在しない場合、falseを返す
+        if ($imageData === null) {
+            return false;
+        }
+
+        // データベースから画像情報を削除
+        $stmt = $db->prepare("DELETE FROM images WHERE delete_url = ?");
+        $stmt->bind_param('s', $deleteUrl);
+        $success = $stmt->execute();
+
+        // データベースの削除が成功した場合、ファイルを削除
+        if ($success) {
+            $filePath = __DIR__ . "/../public/storage/" . $imageData['image_path'];
+            if (file_exists($filePath)) {
+                unlink($filePath);
+            } else {
+                return false;
+            }
+        }
+
+        return $success;
+    }
+
 }

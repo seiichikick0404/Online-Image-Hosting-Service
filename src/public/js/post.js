@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .then((data) => {
             console.log(data);
             displayErrors(data.response.errors);
+            showSuccessMessage(data.response);
             document.getElementById("post-btn-after").style.display = "none";
             document.getElementById("post-btn-before").style.display =
               "inline-block";
@@ -47,6 +48,26 @@ async function displayErrors(errors) {
   if (errors.image && errors.image.length > 0) {
     document.getElementById("imageError").innerText = errors.image.join(", ");
   }
+}
+
+async function showSuccessMessage(response) {
+  // 通信完了後の情報を表示する
+  const successMessageContainer = document.getElementById(
+    "successMessageContainer"
+  );
+  const viewUrlLink = successMessageContainer.querySelector("#viewUrl a");
+  const deleteUrlLink = successMessageContainer.querySelector("#deleteUrl a");
+
+  const viewUrl = `show${response.data.imageUrl}`;
+  const deleteUrl = `delete${response.data.deleteUrl}`;
+
+  viewUrlLink.href = viewUrl;
+  viewUrlLink.innerText = viewUrl;
+  deleteUrlLink.href = deleteUrl;
+  deleteUrlLink.innerText = deleteUrl;
+
+  // コンテナを表示状態にする
+  successMessageContainer.classList.remove("d-none");
 }
 
 async function postData(url = "", formData) {
