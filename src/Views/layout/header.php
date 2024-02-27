@@ -23,10 +23,10 @@
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="top">Home</a>
+                    <a class="nav-link" href="/top">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="imageLibrary">Image Library</a>
+                    <a class="nav-link" href="/imageLibrary">Image Library</a>
                 </li>
             </ul>
         </div>
