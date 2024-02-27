@@ -176,4 +176,12 @@ class DatabaseHelper
         return $success;
     }
 
+    public static function incrementViewCount(string $uri): void
+    {
+        $db = new MySQLWrapper();
+        $stmt = $db->prepare("UPDATE images SET view_count = view_count + 1 WHERE image_url = ?");
+        $stmt->bind_param('s', $uri);
+        $stmt->execute();
+    }
+
 }
