@@ -22,6 +22,7 @@ class Cron extends AbstractCommand
     public function execute(): int
     {
         $this->log('Checking data for deletion...');
+
         $this->deleteOneMonthAgoData();
 
         return 0;
@@ -42,12 +43,11 @@ class Cron extends AbstractCommand
         $result = $stmt->get_result();
 
         $imageDir = __DIR__ . '/../../public/storage/';
-        $deleteCount = 0; // 削除したファイルの数をカウント
+        $deleteCount = 0;
 
         while ($row = $result->fetch_assoc()) {
             $filePath = $imageDir . $row['image_path'];
             if (file_exists($filePath)) {
-                // ファイルが存在する場合は削除
                 unlink($filePath);
                 $deleteCount++;
             }
