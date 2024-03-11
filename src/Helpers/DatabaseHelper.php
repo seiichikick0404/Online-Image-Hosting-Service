@@ -30,7 +30,7 @@ class DatabaseHelper
             $imageHelper = new ImageHelper();
             $imagePath = $imageHelper->saveImageFile($image);
 
-            if ($imagePath === null) {
+            if ($imagePath === "") {
                 return [
                     'success' => false,
                     'message' => '画像ファイルの保存に失敗しました。'

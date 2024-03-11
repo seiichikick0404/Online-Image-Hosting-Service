@@ -4,7 +4,7 @@ namespace Helpers;
 
 use Exception;
 
-class ImageHelper 
+class ImageHelper
 {
     const TARGET_DIR = __DIR__ . '/../public/storage/';
 
@@ -22,7 +22,7 @@ class ImageHelper
         if (move_uploaded_file($image['tmp_name'], $targetFile)) {
             return $imagePath;
         } else {
-            return null;
+            return "";
         }
     }
 
