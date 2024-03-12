@@ -1,5 +1,9 @@
 <?php
 
+
+// タイムゾーンを日本時間に設定
+date_default_timezone_set('Asia/Tokyo');
+
 // コマンドを定義
 $command = 'php console cron';
 
