@@ -44,12 +44,23 @@ class Cron extends AbstractCommand
 
         $imageDir = __DIR__ . '/../../public/storage/';
         $deleteCount = 0;
+        $directoriesToCheck = [];
 
         while ($row = $result->fetch_assoc()) {
             $filePath = $imageDir . $row['image_path'];
             if (file_exists($filePath)) {
                 unlink($filePath);
                 $deleteCount++;
+
+                // ディレクトリを記録
+                $directoriesToCheck[dirname($filePath)] = true;
+            }
+        }
+
+        // 空のディレクトリを削除
+        foreach (array_keys($directoriesToCheck) as $dirPath) {
+            if (is_dir($dirPath) && count(scandir($dirPath)) == 2) {
+                rmdir($dirPath);
             }
         }
 
