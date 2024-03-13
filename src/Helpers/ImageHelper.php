@@ -16,7 +16,8 @@ class ImageHelper
         // ディレクトリの存在を確認し、必要に応じて作成
         $dirPath = dirname($targetFile);
         if (!is_dir($dirPath)) {
-            mkdir($dirPath, 0755, true);
+            mkdir($dirPath, 0777, true);
+            chmod($dirPath, 0777);
         }
 
         if (move_uploaded_file($image['tmp_name'], $targetFile)) {
