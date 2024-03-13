@@ -182,6 +182,12 @@ class DatabaseHelper
             $filePath = __DIR__ . "/../public/storage/" . $imageData['image_path'];
             if (file_exists($filePath)) {
                 unlink($filePath);
+
+                // フォルダが空の場合、削除
+                $directoryPath = dirname($filePath);
+                if (is_dir($directoryPath) && count(scandir($directoryPath)) === 2) {
+                    rmdir($directoryPath);
+                }
             } else {
                 return false;
             }
