@@ -3,6 +3,7 @@
 namespace Helpers;
 
 use Exception;
+use Helpers\Settings;
 
 class ImageHelper
 {
@@ -45,10 +46,11 @@ class ImageHelper
      */
     public static function generateImageShowPath(string $filename): string
     {
+        $domain = Settings::env('DOMAIN');
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         $uniqueId = md5(uniqid(rand(), true));
 
-        return "/media-type-" . $extension . "/" . $uniqueId;
+        return $domain . "/show" . "/media-type-" . $extension . "/" . $uniqueId;
     }
 
     /**
@@ -59,9 +61,10 @@ class ImageHelper
      */
     public static function generateImageDeletePath(string $filename): string
     {
+        $domain = Settings::env('DOMAIN');
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         $uniqueId = md5(uniqid(rand(), true));
 
-        return "/" . $extension . "/" . $uniqueId;
+        return  $domain . "/delete" . "/" . $extension . "/" . $uniqueId;
     }
 }

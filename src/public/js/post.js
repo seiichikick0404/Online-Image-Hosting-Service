@@ -58,8 +58,8 @@ async function showSuccessMessage(response) {
   const viewUrlLink = successMessageContainer.querySelector("#viewUrl a");
   const deleteUrlLink = successMessageContainer.querySelector("#deleteUrl a");
 
-  const viewUrl = `show${response.data.imageUrl}`;
-  const deleteUrl = `delete${response.data.deleteUrl}`;
+  const viewUrl = response.data.imageUrl;
+  const deleteUrl = response.data.deleteUrl;
 
   viewUrlLink.href = viewUrl;
   viewUrlLink.innerText = viewUrl;

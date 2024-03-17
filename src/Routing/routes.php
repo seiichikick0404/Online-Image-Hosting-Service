@@ -5,6 +5,7 @@ use Helpers\DatabaseHelper;
 use Helpers\ValidationHelper;
 use Response\Render\HTMLRenderer;
 use Response\Render\JSONRenderer;
+use Helpers\Settings;
 
 
 
@@ -32,7 +33,7 @@ return [
     },
     'show'=>function(){
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $uri =  str_replace("/show", "", $uri);
+        $uri = Settings::env('DOMAIN') . $uri;
 
         try {
             DatabaseHelper::incrementViewCount($uri);
@@ -45,7 +46,7 @@ return [
     },
     'delete'=>function(){
         $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-        $deleteUrl = str_replace("/delete", "", $uri);
+        $deleteUrl = Settings::env('DOMAIN') . $uri;
 
         try {
             $status = DatabaseHelper::deleteImage($deleteUrl);
