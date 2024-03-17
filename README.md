@@ -10,8 +10,6 @@ https://online-image-hosting-service.seiprojects.com/top
 
 ## DEMO
 
-<video src="./public/online-image-demo.mp4" alt="代替テキスト" title="画像のタイトル" width="640" height="340">
-
 ## 開発環境の構築
 
 今回は開発環境のみ Docker を使って開発をしてるので誰でもすぐにローカルマシンで動作確認が可能です</br>
