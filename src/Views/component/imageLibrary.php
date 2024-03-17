@@ -8,7 +8,7 @@
             <?php foreach ($images as $image): ?>
                 <!-- Gallery Item -->
                 <div class="col-md-4 gallery-item">
-                    <a href="show<?php echo htmlspecialchars($image['image_url']); ?>">
+                    <a href="<?php echo htmlspecialchars($image['image_url']); ?>">
                         <img src="../../public/storage/<?php echo htmlspecialchars($image['image_path']); ?>" class="gallery-image" alt="<?php echo htmlspecialchars($image['title']); ?>">
                         <h5 class="mt-2"><?php echo htmlspecialchars($image['title']); ?></h5>
                         <p class="text-muted"><i class="fas fa-eye"></i>: <?php echo htmlspecialchars($image['view_count']); ?></p>
